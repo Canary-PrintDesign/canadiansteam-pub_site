@@ -1,0 +1,7 @@
+{
+  "name": "canadiansteam-pub-site",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.2.0"
+  }
+}
