@@ -1763,7 +1763,7 @@ input[type="submit"] {
 
 .btn-system:hover {
   color: #fff;
-  opacity: 0.8;
+  background: #171717;
 }
 
 .btn-system.border-btn:hover {
