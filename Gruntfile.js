@@ -1,5 +1,5 @@
-// Generated on 2015-01-18 using
-// generator-webapp 0.5.1
+// Generated on 2015-01-20 using
+// generator-webapp-uncss 0.1.0
 'use strict';
 
 // # Globbing
@@ -188,12 +188,22 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
+      html: '/index.html',
       options: {
-        dest: '<%= config.dist %>'
-      },
-      html: '<%= config.app %>/index.html'
+        dest: '',
+        flow: {
+          html: {
+            steps: {
+              // Disabled as we'll be using a manual
+              // cssmin configuration later. This is
+              // to ensure we work well with grunt-uncss
+              // css: ['cssmin']
+            },
+            post: {}
+          }
+        }
+      }
     },
-
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
       options: {
@@ -206,6 +216,15 @@ module.exports = function (grunt) {
       html: ['<%= config.dist %>/{,*/}*.html'],
       css: ['<%= config.dist %>/styles/{,*/}*.css']
     },
+
+     // Remove unused CSS across multiple files
+uncss: {
+  dist: {
+    files: {
+      'dist/css/tidy.css': ['app/index.html', 'app/about.html']
+    }
+  }
+},
 
     // The following *-min tasks produce minified files in the dist folder
     imagemin: {
@@ -255,16 +274,15 @@ module.exports = function (grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care
     // of minification. These next options are pre-configured if you do not
     // wish to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= config.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
+     cssmin: {
+       dist: {
+         files: {
+           '<%= config.dist %>/styles/main.css': [
+             '.tmp/styles/{,*/}*.css'
+           ]
+         }
+       }
+     },
     // uglify: {
     //   dist: {
     //     files: {
@@ -380,9 +398,10 @@ module.exports = function (grunt) {
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
-    'concat',
+    'uncss',
     'cssmin',
-    'uglify',
+    //'concat',
+    //'uglify',
     'copy:dist',
     'rev',
     'usemin',
